@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout HiGHS
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: 'ERGO-Code/HiGHS'
         ref: 'v1.6.0'
@@ -19,17 +19,15 @@ jobs:
     - name: Build HiGHS
       run: |
         mkdir build
-        cd build
-        cmake .. -DFAST_BUILD=ON -DCMAKE_BUILD_TYPE=Release
-        cmake --build .
+        cmake -S. -Bbuild -DFAST_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
+        cmake --build build --config Release --parallel 6
 
     - name: Install HiGHS
       run: |
-        cd build
-        cmake --install .
+        cmake --install build
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: installed-directory-${{ matrix.os }}
-        path: build/install/
+        name: highs-artifact-${{ matrix.os }}
+        path: install/
