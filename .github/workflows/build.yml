@@ -29,5 +29,19 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: highs-artifact-${{ matrix.os }}
+        name: highs-artifact-${{ runner.os }}-${{ runner.arch }}
         path: install/
+
+  # I want to create a release, download the artifacts and upload them to release
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        pattern: highs-artifact-*
+        path: artifacts
+    - name: Display structure of downloaded files
+      run: ls -R artifacts
+    
