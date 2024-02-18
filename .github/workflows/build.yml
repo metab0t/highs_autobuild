@@ -43,5 +43,21 @@ jobs:
         pattern: highs-artifact-*
         path: artifacts
     - name: Display structure of downloaded files
-      run: ls -R artifacts
+      run: ls artifacts
+    - name: Create archives
+      run: |
+        cd artifacts
+        for f in *; do
+          if [ -d "$f" ]; then
+            zip -r "$f.zip" "$f"
+          fi
+        done
+    - name: Display structure of archives
+      run: ls artifacts
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          artifacts/*.zip
+        prerelease: true
     
