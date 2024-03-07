@@ -22,7 +22,7 @@ jobs:
     - name: Build HiGHS
       run: |
         mkdir build
-        cmake -S. -Bbuild -DFAST_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
+        cmake -S. -Bbuild -DFAST_BUILD=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
         cmake --build build --config Release --parallel 6
 
     - name: Install HiGHS
