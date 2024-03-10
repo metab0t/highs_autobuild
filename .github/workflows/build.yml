@@ -29,6 +29,16 @@ jobs:
       run: |
         cmake --install build
 
+    - name: patch rpath on linux
+      if: runner.os == 'Linux'
+      run: |
+        patchelf --set-rpath '$ORIGIN/../lib' install/bin/highs
+
+    - name: patch rpath on macos
+      if: runner.os == 'macOS'
+      run: |
+        install_name_tool -add_rpath '@loader_path/../lib' install/bin/highs
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
